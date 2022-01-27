@@ -1,0 +1,148 @@
+* {
+    --txt: #ddd;
+    --txt-d: #aaa;
+    --bg: #151515;
+    --bg-2: #1d1d1d;
+    --bg-l: #222;
+    --bg-l2: #252525;
+    --bg-ll: #333;
+    --prim: #d61a1a;
+    --prim-d: #a5311d;
+    --prim-dd: #580000ce;
+
+    font-family: arial;
+    margin: 0;
+}
+
+*::selection {
+    background-color: var(--prim-d);
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    color: var(--txt);
+    background-color: var(--bg);
+    overflow-x: hidden;
+}
+
+
+nav {
+    position: fixed;
+    z-index: 10;
+
+    background-color: var(--bg-ll);
+    height: 5rem;
+    width: 100%;
+    padding: 0 20px;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    box-shadow: black 0 0 50px -20px;
+}
+
+h1 {
+    font-weight: 500;
+    font-size: 3rem !important;
+}
+
+h2 {
+    margin-bottom: 0 !important;
+    color: var(--txt);
+    font-size: 1.8rem !important;
+    font-weight: normal;
+}
+
+a {
+    text-decoration: none;
+    color: var(--txt);
+}
+
+nav > .title {
+    font-size: 2rem;
+}
+
+.page > .title > span,
+nav > .title > span {
+    font-weight: 600;
+    color: var(--prim);
+}
+
+button {
+    color: var(--txt);
+    border: none;
+}
+
+.btn,
+button {
+    display: inline-flex;
+    padding: 10px 20px;
+    background-color: var(--bg-ll);
+    border-radius: 10px;
+    font-size: 1.2rem;
+    transition: 200ms;
+    align-items: center;
+    justify-content: center;
+    box-shadow: rgba(0, 0, 0, 0.233) 0 10px 40px 0px;
+}
+
+.btn:hover,
+button:hover {
+    transform: scale(110%);
+}
+
+.colorbtn {
+    background-color: var(--prim-d);
+}
+
+.circlebtn {
+    padding: 0;
+    font-size: 1rem;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+}
+
+.btn > img,
+button > img {
+    height: 1.5em;
+    width: auto;
+    margin-right: 15px;
+}
+
+input.textinput {
+    color: var(--txt);
+    border: none;
+    font-size: 1.1rem;
+    box-shadow: var(--prim) 0 0 0 0;
+    padding: 10px 10px;
+    background-color: var(--bg-ll);
+    border-radius: 10px;
+    transition: 200ms;
+}
+
+input.textinput:focus {
+    outline: none;
+    box-shadow: var(--prim) 0 0 0 3px;
+}
+
+.link {
+    font-weight: 700;
+    color: var(--prim);
+}
+
+.fade {
+    overflow: hidden;
+    animation: 500ms fade cubic-bezier(0, 0.41, 0.29, 1);
+}
+
+.page {
+    transition: 500ms;
+    display: grid;
+    grid-template-columns: 500px auto;
+
+    padding: 5rem 0 0 0;
+    min-height: calc(100vh - 5rem);
+}

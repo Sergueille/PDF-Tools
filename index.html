@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <link href="CSS/index.css" rel="stylesheet">
+    <link href="CSS/file-selector.css" rel="stylesheet">
+    <link href="CSS/results.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>PDF Tools</title>
+</head>
+
+<body>
+    <nav>
+        <p class="title"><span>PDF</span> Tools </p>
+    </nav>
+    <div class="page">
+        <div id="fileSelector">
+            <input type="file" id="file" accept=".pdf" onchange="OnGetDoc(this.files[0])">
+            <div id="page-selector">
+                <button onclick="PreviousPage()" class="circlebtn">
+                    ◀
+                </button>
+                <span id="page-id">
+                    1
+                </span>
+                <button onclick="NextPage()" class="circlebtn">
+                    ▶
+                </button>
+            </div>
+            <div id="preview-canvas-parent">
+                <canvas id="preview-canvas">
+
+                </canvas>
+            </div>
+        </div>
+        <div id="results">
+            <div id="table-view">
+                <div id="res-grid">
+                </div>
+                <input type="text" class="textinput" id="new-col-input" placeholder="Nouvelle colonne...">
+            </div>
+            <div id="download">
+                <input type="text" class="textinput" id="file-name" placeholder="Nom du fichier">
+                <span>.csv</span>
+                <button class="colorbtn" onclick="GetFile()">Exporter</button>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script src="PdfJS/build/pdf.js"></script>
+<script src="PDFLoader.js"></script>
+<script src="TableExtractor.js"></script>
+
+</html>
