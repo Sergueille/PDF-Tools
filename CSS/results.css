@@ -18,7 +18,7 @@
     grid-template-columns: repeat(2, 10px);
     grid-auto-flow: column;
 
-    max-height: calc(100vh - 12rem);
+    height: calc(100vh - 12rem);
     overflow: auto;
 
     border-radius: 10px;
