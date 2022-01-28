@@ -12,6 +12,8 @@
 
     font-family: arial;
     margin: 0;
+
+    transition: 200ms;
 }
 
 *::selection {
@@ -145,4 +147,16 @@ input.textinput:focus {
 
     padding: 5rem 0 0 0;
     min-height: calc(100vh - 5rem);
+}
+
+.version {
+    margin: 30px;
+    background-color: var(--prim-d);
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-weight: 600;
+}
+
+.transparent {
+    opacity: 0;
 }

@@ -15,11 +15,16 @@
 <body>
     <nav>
         <p class="title"><span>PDF</span> Tools </p>
+        <p class="version">Alpha</p>
     </nav>
     <div class="page">
         <div id="fileSelector">
-            <input type="file" id="file" accept=".pdf" onchange="OnGetDoc(this.files[0])">
-            <div id="page-selector">
+            <input type="file" id="file" class="file-input big" accept=".pdf" onchange="OnGetDoc(this.files[0])">
+            <label for="file" ondrop="OnDragDoc(event)" ondragover="event.preventDefault();">
+                <span class="material-icons">picture_as_pdf</span>
+                <p>Glissez-déposez un fichier ou cliquez pour séléctionner</p>
+            </label>
+            <div id="page-selector" class="transparent">
                 <button onclick="PreviousPage()" class="circlebtn">
                     <span class="material-icons">arrow_back</span>
                 </button>

@@ -1,5 +1,7 @@
 const canvas = document.getElementById("preview-canvas");
 const page = document.querySelector(".page");
+const fileSelector = document.getElementById("file");
+const pageSelector = document.getElementById("page-selector");
 
 const ctx = canvas.getContext("2d");
 const pdfjsLib = window['pdfjs-dist/build/pdf'];
@@ -13,6 +15,18 @@ var currentPageTexts;
 var currentPageId = 1;
 
 page.style.setProperty("grid-template-columns", "100vw auto")
+
+function OnDragDoc(event) {
+    event.preventDefault();
+    if (event.dataTransfer.items) {
+        if (event.dataTransfer.items[0].kind === 'file') {
+            OnGetDoc(event.dataTransfer.items[0].getAsFile());
+        }
+    } 
+    else {
+        OnGetDoc(dataTransfer.files[0]);
+    }
+}
 
 function OnGetDoc(doc) {
     let fileReader = new FileReader();
@@ -32,6 +46,9 @@ function OnGetDoc(doc) {
 }
 
 function OnDocLoaded() {
+    fileSelector.classList.remove("big");
+    fileSelector.classList.add("small");
+    pageSelector.classList.remove("transparent");
     selectPage();
 }
 
