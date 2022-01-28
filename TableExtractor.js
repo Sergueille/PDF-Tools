@@ -2,7 +2,7 @@ const table = document.getElementById("res-grid");
 const newColInput = document.getElementById("new-col-input");
 const fileNameInput = document.getElementById("file-name")
 
-const maxXDiff = 15;
+var maxXDiff = 15;
 
 var tableData = [];
 var colNameElements = [];
@@ -11,14 +11,17 @@ var valuesElements = [];
 newColInput.onkeydown = () => {
     var keyCode = window.event.code || window.event.key;
     if (keyCode == 'Enter') {
-        AddColumn(newColInput.value);
+        AddColumn();
     }
 };
 
-function AddColumn(name) {
+function AddColumn() {
+    if (!newColInput.value || !newColInput.value.trim())
+        return;
+
     tableData.push({
-        colname: name,
-        values: GetColValues(name)
+        colname: newColInput.value,
+        values: GetColValues(newColInput.value)
     });
 
     DisplayTable();
@@ -40,6 +43,14 @@ function RenameColumn(id, name) {
 
 function DeleteColumn(id) {
     tableData.splice(id);
+    DisplayTable();
+}
+
+function RefreshAll() {
+    tableData.forEach(column => {
+        column.values = GetColValues(column.colname)
+    })
+
     DisplayTable();
 }
 
@@ -157,4 +168,9 @@ function GetFile() {
     a.setAttribute('href', url);
     a.setAttribute('download', name);
     a.click();
+}
+
+function SetMaxXDiff(event) {
+    console.log(event.target.value);
+    maxXDiff = event.target.value;
 }

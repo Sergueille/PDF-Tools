@@ -9,6 +9,7 @@ pdfjsLib.GlobalWorkerOptions.workerSrc = 'PdfJS/build/pdf.worker.js';
 
 const previewScale = 0.8;
 
+var docFile;
 var currentDoc;
 var currentPage;
 var currentPageTexts;
@@ -29,6 +30,7 @@ function OnDragDoc(event) {
 }
 
 function OnGetDoc(doc) {
+    docFile = doc;
     let fileReader = new FileReader();
 
     fileReader.onload = function () {
@@ -55,10 +57,6 @@ function OnDocLoaded() {
 async function OnPageLoaded() {
     var textContent = currentPage.getTextContent();
     currentPageTexts = await textContent.then(text => text);
-
-    currentPageTexts.items.forEach(text => {
-        console.log(text);
-    });
 }
 
 function selectPage() {
@@ -97,4 +95,8 @@ function PreviousPage() {
         currentPageId--;
         selectPage()
     }
+}
+
+function OpenPDF() {
+    window.open(URL.createObjectURL(docFile), "_blank");
 }

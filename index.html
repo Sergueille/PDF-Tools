@@ -34,6 +34,9 @@
                 <button onclick="NextPage()" class="circlebtn">
                     <span class="material-icons">arrow_forward</span>
                 </button>
+                <button onclick="OpenPDF()" class="circlebtn">
+                    <span class="material-icons">open_in_new</span>
+                </button>
             </div>
             <div id="preview-canvas-parent">
                 <canvas id="preview-canvas">
@@ -45,7 +48,26 @@
             <div id="table-view">
                 <div id="res-grid">
                 </div>
-                <input type="text" class="textinput" id="new-col-input" placeholder="Nouvelle colonne...">
+                <div id="res-settings">
+                    <div class="flex-row">
+                        <input type="text" class="textinput" id="new-col-input" placeholder="Nouvelle colonne...">
+                        <button onclick="AddColumn()" class="circlebtn">
+                            <span class="material-icons">add</span>
+                        </button>
+                    </div>
+
+                    <p class="settings-title">
+                        Paramètres
+                    </p>
+
+                    <label>Décalage X maximum</label>
+                    <input type="number" class="textinput" value="15" onchange="SetMaxXDiff(event)">
+
+                    <button onclick="RefreshAll()">
+                        <span class="material-icons">refresh</span>
+                        Actualiser tout
+                    </button>
+                </div>
             </div>
             <div id="download">
                 <input type="text" class="textinput" id="file-name" placeholder="Nom du fichier">

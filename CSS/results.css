@@ -48,10 +48,34 @@
 }
 
 #new-col-input {
+    margin-left: 0 !important;
     height: 2.5rem;
     width: 400px;
     padding: 0 10px;
     margin: 0.4rem;
+}
+
+#res-settings {
+    margin-left: 15px;
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+.settings-title {
+    margin: 30px 0 10px 0;
+    font-size: 1.4rem;
+}
+
+#res-settings > label {
+    color: var(--txt-d);
+    margin: 0 0 5px 0;
+}
+
+#res-settings > input {
+    margin: 0 0 15px 0;
 }
 
 #download {
