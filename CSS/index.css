@@ -12,7 +12,7 @@
 
     font-family: arial;
     margin: 0;
-
+    box-sizing: border-box;
     transition: 200ms;
 }
 
@@ -118,6 +118,15 @@ button > img {
     margin-right: 15px;
 }
 
+.btn > span,
+button > span {
+    margin-right: 5px;
+}
+
+.circlebtn > span {
+    margin: 0 !important;
+}
+
 input.textinput {
     color: var(--txt);
     border: none;
@@ -132,6 +141,16 @@ input.textinput {
 input.textinput:focus {
     outline: none;
     box-shadow: var(--prim) 0 0 0 3px;
+}
+
+.select {
+    color: var(--txt);
+    border: none;
+    font-size: 1rem;
+    padding: 5px 10px;
+    background-color: var(--bg-ll);
+    border-radius: 10px;
+    transition: 200ms;
 }
 
 .link {
@@ -171,4 +190,28 @@ input.textinput:focus {
     flex-direction: row;
     align-items: center;
     justify-content: stretch;
+}
+
+.tip {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 300px;
+
+    margin: 10px 0;
+    padding: 20px;
+
+    border: 2px solid var(--prim-d);
+    border-radius: 10px;
+
+    color: var(--txt-d)
+}
+
+.tip > span {
+    vertical-align: middle;
+    position: relative;
+    bottom: 3px;
+}
+
+.flex-grow {
+    flex-grow: 5;
 }

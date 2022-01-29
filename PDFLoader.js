@@ -62,6 +62,7 @@ function OnDocLoaded() {
 async function OnPageLoaded() {
     var textContent = currentPage.getTextContent();
     currentPageTexts = await textContent.then(text => text);
+    RefreshAll();
 }
 
 // Update preview, update

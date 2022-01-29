@@ -2,12 +2,21 @@ const table = document.getElementById("res-grid"); // The results table
 const newColInput = document.getElementById("new-col-input"); // The input for a new column
 const fileNameInput = document.getElementById("file-name"); // The input for the file name
 
-// Delete when poved per column
-var maxXDiff = 15;
+// Settings input
+const settingsDropdown = document.getElementById("setting-select");
+const maxXDiffInput = document.getElementById("max-x-diff");
+const referenceColumnCheck = document.getElementById("reference-column");
+const alignValuesCheck = document.getElementById("align-values");
 
 // All the data of the table
 // See AddColumn() for object structure
 var tableData = [];
+
+var selectedColumn; // Selected column in setting tab
+var mainColumn; // Column to refer to for y alignement
+var mainColumnValuesPos; // Y position of the values in the main column
+
+UpdateSettingsUI();
 
 // Add column when press enter on input
 newColInput.onkeydown = () => {
@@ -26,10 +35,23 @@ function AddColumn() {
     // Create column
     tableData.push({
         colname: newColInput.value, // The name of the column
-        values: GetColValues(newColInput.value) // Get values from doc
+        values: [], // Values of the column
+        maxXDiff: 15, // Max difference between column name x and values x
+        alignValues: true, // Should values be duplicated when there is a hole in the table
     });
 
+    tableData[tableData.length - 1].values = GetColValues(tableData[tableData.length - 1]); // Get values from doc
+
+    // First columns
+    if (tableData.length === 1)
+    {
+        selectedColumn = tableData[0]; // Select
+        mainColumn = selectedColumn;
+        UpdateSettingsUI();
+    }
+
     DisplayTable(); // Update UI
+    UpdateSettingsDropdown();
 }
 
 function RenameColumn(id, name) {
@@ -40,24 +62,44 @@ function RenameColumn(id, name) {
     }
 
     // Update name and values
-    tableData[id] = {
-        colname: name,
-        values: GetColValues(name)
-    };
+    tableData[id].colname = name
+    tableData[id].values = GetColValues(tableData[id])
 
     DisplayTable(); // Update UI
+    UpdateSettingsDropdown();
 }
 
 function DeleteColumn(id) {
-    // Ramove the column
-    tableData.splice(id);
+    if (tableData[id] == selectedColumn) {
+        if (tableData.length > 0) {
+            selectedColumn = tableData[0]
+            settingsDropdown.value = 0;
+            UpdateSettingsUI();
+        } else {
+            selectedColumn = null;
+            UpdateSettingsUI();
+        }
+    }
+
+    if (tableData[id] == mainColumn) {
+        if (tableData.length > 0)
+            mainColumn = tableData[0]
+        else
+            mainColumn = null;
+        
+        UpdateSettingsUI();
+    }
+
+    // Remove the column
+    tableData.splice(id, 1);
     DisplayTable(); // Update UI
+    UpdateSettingsDropdown();
 }
 
 // Refresh all values
 function RefreshAll() {
     tableData.forEach(column => {
-        column.values = GetColValues(column.colname) // Get new values
+        column.values = GetColValues(column) // Get new values
     })
 
     DisplayTable();
@@ -65,7 +107,7 @@ function RefreshAll() {
 
 // Destroys all the table and create new elements
 function DisplayTable() {
-    // Destory chids
+    // Destroy chids
     while (table.firstChild) {
         table.removeChild(table.firstChild);
     }
@@ -109,18 +151,19 @@ function DisplayTable() {
 }
 
 // Get values for a column
-function GetColValues(name) {
+function GetColValues(column) {
     // Return if no page selected or no text in page
     if (!currentPageTexts || currentPageTexts.items.length === 0)
         return [];
 
+    // Search for column title
     // Get shorter text element that contains the name
     let colText = undefined; // Result
     let maxScore = 0;
     currentPageTexts.items.forEach(el => {
-        let score = (el.str.toLowerCase().includes(name.toLowerCase())? 10000 : 0) - el.str.length;
+        let score = (el.str.toLowerCase().includes(column.colname.toLowerCase())? 10000 : 0) - el.str.length;
 
-        if (score > maxScore){
+        if (score > maxScore) {
             maxScore = score;
             colText = el;
         }
@@ -137,6 +180,13 @@ function GetColValues(name) {
 
     let res = []; // Results
 
+    let isMainColumn = column == mainColumn;
+    let mustAlign = column.alignValues && !isMainColumn;
+    let excpectedNearestElement = 0;
+
+    if (isMainColumn)
+        mainColumnValuesPos = [];
+
     // For each text element in the page
     currentPageTexts.items.forEach(text => {
         // Get text positions
@@ -144,17 +194,54 @@ function GetColValues(name) {
         let xCenter = text.transform[4];
         let y = text.transform[5];
         
-        if (Math.abs(colXcenter - xCenter) < maxXDiff) { // If x difference is smaller than limit
+        if (Math.abs(colXcenter - xCenter) < column.maxXDiff) { // If x difference is smaller than limit
             if (y < colY) { // If text is below column name
                 if (text.str && text.str.trim()) { // If text is not empty
-                    res.push(text); // Add to results!
+                    let canAdd = true;
+                    if (mustAlign) { // Align values
+                        let nearest = GetNearestElementIDOfMainColumn(y);
+
+                        if (nearest < excpectedNearestElement) { // New line of value
+                            res[nearest] += " " + text.str;
+                            canAdd = false;
+                        } 
+                        else {
+                            let emptyCount = nearest - excpectedNearestElement; // Get number of values that have been skipped
+                            for (let i = 0; i < emptyCount; i++) {
+                                res.push("") // Fill empty
+                            }
+                            excpectedNearestElement += emptyCount + 1;
+                        }
+                    }
+
+                    if (canAdd)
+                        res.push(text.str); // Add to results!
+
+                    if (isMainColumn) // Update main column values pos
+                        mainColumnValuesPos.push(y)
                 }
             }
         }
     });
 
     // Get only text content
-    return res.map(text => text.str);
+    return res;
+}
+
+// Get the id of the nearest value in main column
+function GetNearestElementIDOfMainColumn(Ypos) {
+    let minDist = 10000000;
+    let nearest;
+
+    for (let i = 0; i < mainColumnValuesPos.length; i++) {
+        let dist = Math.abs(mainColumnValuesPos[i] - Ypos);
+        if (dist < minDist) {
+            minDist = dist;
+            nearest = i;
+        }
+    }
+
+    return nearest;
 }
 
 // Get CSVfile and start downloading
@@ -197,7 +284,59 @@ function GetFile() {
     a.click();
 }
 
-function SetMaxXDiff(event) {
-    console.log(event.target.value);
-    maxXDiff = event.target.value;
+// Update choices in the dorpdown
+function UpdateSettingsDropdown() {
+    // Remove dropdown options
+    while (settingsDropdown.firstChild) {
+        settingsDropdown.removeChild(settingsDropdown.firstChild);
+    }
+
+    // Add new options
+    for (let i = 0; i < tableData.length; i++) {
+        const column = tableData[i];
+        const element = document.createElement("option")
+        element.setAttribute("value", i);
+        element.text = column.colname;
+        settingsDropdown.appendChild(element);
+    }
+}
+
+// Update the settins UI EXCEPT FOR THE DROPDOWN
+function UpdateSettingsUI() {
+    if (selectedColumn)
+    {
+        document.getElementById("res-settings-inner").classList.remove("transparent")
+        maxXDiffInput.value = selectedColumn.maxXDiff; 
+        alignValuesCheck.checked = selectedColumn.alignValues;
+        referenceColumnCheck.checked = selectedColumn == mainColumn;
+    }
+    else
+    {
+        document.getElementById("res-settings-inner").classList.add("transparent");
+    }
+}
+
+function ApplySettings() {
+    if (!selectedColumn)
+        return;
+
+    selectedColumn.maxXDiff = maxXDiffInput.value;
+    selectedColumn.alignValues = alignValuesCheck.checked;
+    if (referenceColumnCheck.checked && selectedColumn != mainColumn)
+    {
+        mainColumn = selectedColumn;
+        selectedColumn.values = GetColValues(selectedColumn);
+        RefreshAll();
+    }
+    else if (!referenceColumnCheck.checked && selectedColumn == mainColumn) {
+        referenceColumnCheck.checked = true;
+    }
+
+    selectedColumn.values = GetColValues(selectedColumn); // Update values
+    DisplayTable(); // Update UI
+}
+
+function SelectColumn() {
+    selectedColumn = tableData[settingsDropdown.value];
+    UpdateSettingsUI();
 }
