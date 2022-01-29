@@ -30,6 +30,8 @@
     text-align: center;
     line-height: 2rem;
     border: 1px solid var(--bg-l);
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 #res-grid > div.colname {
@@ -57,6 +59,10 @@
 
 #res-settings {
     margin-left: 15px;
+}
+
+#res-settings,
+#res-settings-inner {
     width: 300px;
     display: flex;
     flex-direction: column;
@@ -65,16 +71,23 @@
 }
 
 .settings-title {
-    margin: 30px 0 10px 0;
     font-size: 1.4rem;
+    margin: 30px 0 5px 0;
 }
 
-#res-settings > label {
+#setting-select {
+    margin: 0px 0 20px 0;
+}
+
+#res-settings-inner > label,
+#res-settings-inner > div > label {
     color: var(--txt-d);
     margin: 0 0 5px 0;
 }
 
-#res-settings > input {
+#res-settings-inner > input,
+#res-settings-inner > button,
+#res-settings-inner > div {
     margin: 0 0 15px 0;
 }
 

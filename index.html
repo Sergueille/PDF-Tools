@@ -16,8 +16,12 @@
     <nav>
         <p class="title"><span>PDF</span> Tools </p>
         <p class="version">Alpha</p>
+        <div class="flex-grow"></div>
+        <a class="btn circlebtn">
+            <span class="material-icons">help</span>
+        </a>
     </nav>
-    
+
     <div class="page">
         <div id="fileSelector">
             <!--File selector-->
@@ -60,24 +64,54 @@
                 </div>
 
                 <div id="res-settings">
-                    <div class="flex-row"> <!--Add column input-->
+                    <div class="flex-row">
+                        <!--Add column input-->
                         <input type="text" class="textinput" id="new-col-input" placeholder="Nouvelle colonne...">
                         <button onclick="AddColumn()" class="circlebtn">
                             <span class="material-icons">add</span>
                         </button>
                     </div>
 
-                    <p class="settings-title">
-                        Paramètres
-                    </p>
+                    <div id="res-settings-inner">
+                        <p class="settings-title">
+                            Paramètres de la colone
+                        </p>
 
-                    <label>Décalage X maximum</label>
-                    <input type="number" class="textinput" value="15" onchange="SetMaxXDiff(event)">
+                        <select id="setting-select" class="select" onchange="SelectColumn()">
+                        </select>
 
-                    <button onclick="RefreshAll()">
-                        <span class="material-icons">refresh</span>
-                        Actualiser tout
-                    </button>
+                        <label>Décalage X maximum</label>
+                        <input id="max-x-diff" type="number" class="textinput" value="15" onchange="ApplySettings()">
+
+                        <div>
+                            <input id="reference-column" type="checkbox" class="checkbox" onchange="ApplySettings()">
+                            <label for="reference-column">Utiliser comme colonne de référence</label>
+                        </div>
+
+                        <div>
+                            <input id="align-values" type="checkbox" class="checkbox" onchange="ApplySettings()">
+                            <label for="align-values">Laisser des valeurs vides pour aligner avec la colonne de
+                                référence</label>
+                        </div>
+
+                        <button onclick="DeleteColumn(settingsDropdown.value)">
+                            <span class="material-icons">delete</span>
+                            Supprimer la colonne
+                        </button>
+                    </div>
+
+                    <div class="tip">
+                        <span class="material-icons">lightbulb</span>
+                        <strong>Astuce:</strong><br />
+                        Cliquez sur le nom d'un colonne dans le tableau pour la renommer. 
+                        Laissez vide pour la supprimer.
+                    </div>
+                    <div class="tip">
+                        <span class="material-icons">lightbulb</span>
+                        <strong>Astuce:</strong><br />
+                        Pour trover une colonne, vous pouvez entrer seulement une partie de son nom.
+                        Les majuscules ne sont pas prises en compte.
+                    </div>
                 </div>
             </div>
 
@@ -85,7 +119,10 @@
             <div id="download">
                 <input type="text" class="textinput" id="file-name" placeholder="Nom du fichier">
                 <span>.csv</span>
-                <button class="colorbtn" onclick="GetFile()">Exporter</button>
+                <button class="colorbtn" onclick="GetFile()">
+                    <span class="material-icons">file_upload</span>
+                    Exporter
+                </button>
             </div>
         </div>
     </div>

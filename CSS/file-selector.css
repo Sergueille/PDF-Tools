@@ -29,7 +29,7 @@
 }
 
 .file-input.big + label {
-    width: 800px;
+    width: 60%;
     height: 400px;
     border: 3px dashed var(--bg-ll)
 }
