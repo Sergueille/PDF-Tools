@@ -1,13 +1,15 @@
-const table = document.getElementById("res-grid");
-const newColInput = document.getElementById("new-col-input");
-const fileNameInput = document.getElementById("file-name")
+const table = document.getElementById("res-grid"); // The results table
+const newColInput = document.getElementById("new-col-input"); // The input for a new column
+const fileNameInput = document.getElementById("file-name"); // The input for the file name
 
+// Delete when poved per column
 var maxXDiff = 15;
 
+// All the data of the table
+// See AddColumn() for object structure
 var tableData = [];
-var colNameElements = [];
-var valuesElements = [];
 
+// Add column when press enter on input
 newColInput.onkeydown = () => {
     var keyCode = window.event.code || window.event.key;
     if (keyCode == 'Enter') {
@@ -15,40 +17,47 @@ newColInput.onkeydown = () => {
     }
 };
 
+// Add a new column
 function AddColumn() {
+    // Do nothing if no name entered
     if (!newColInput.value || !newColInput.value.trim())
         return;
 
+    // Create column
     tableData.push({
-        colname: newColInput.value,
-        values: GetColValues(newColInput.value)
+        colname: newColInput.value, // The name of the column
+        values: GetColValues(newColInput.value) // Get values from doc
     });
 
-    DisplayTable();
+    DisplayTable(); // Update UI
 }
 
 function RenameColumn(id, name) {
+    // If no name, remove column
     if (!name.trim()) {
         DeleteColumn(id)
         return;
     }
 
+    // Update name and values
     tableData[id] = {
         colname: name,
         values: GetColValues(name)
     };
 
-    DisplayTable();
+    DisplayTable(); // Update UI
 }
 
 function DeleteColumn(id) {
+    // Ramove the column
     tableData.splice(id);
-    DisplayTable();
+    DisplayTable(); // Update UI
 }
 
+// Refresh all values
 function RefreshAll() {
     tableData.forEach(column => {
-        column.values = GetColValues(column.colname)
+        column.values = GetColValues(column.colname) // Get new values
     })
 
     DisplayTable();
@@ -56,19 +65,21 @@ function RefreshAll() {
 
 // Destroys all the table and create new elements
 function DisplayTable() {
+    // Destory chids
     while (table.firstChild) {
         table.removeChild(table.firstChild);
     }
 
+    // For each column:
     for (let i = 0; i < tableData.length; i++) {
         const column = tableData[i];
 
-        // Column title
+        // Create olumn title
         let element = document.createElement("div");
         element.setAttribute("class", "colname");
         element.style.setProperty("grid-row", "1");
 
-        // Column title input field
+        // Create column title input field
         let input = document.createElement("input");
         input.setAttribute("type", "text");
         input.setAttribute("class", "textinput");
@@ -77,14 +88,14 @@ function DisplayTable() {
         input.onkeydown = (event) => {
             var keyCode = window.event.code || window.event.key;
             if (keyCode == 'Enter') {
-                RenameColumn(i, event.target.value); // Closure bug on referencing i?
+                RenameColumn(i, event.target.value); // Closure bug on referencing i? Don't know how this works
             }
         };
 
         table.appendChild(element);
         element.appendChild(input);
 
-        // Values
+        // Creates values
         for (let j = 0; j < column.values.length; j++) {
             let value = document.createElement("div");
             value.style.setProperty("grid-row", j + 2);
@@ -97,14 +108,15 @@ function DisplayTable() {
     }
 }
 
+// Get values for a column
 function GetColValues(name) {
+    // Return if no page selected or no text in page
     if (!currentPageTexts || currentPageTexts.items.length === 0)
         return [];
 
-    let colText = undefined;
+    // Get shorter text element that contains the name
+    let colText = undefined; // Result
     let maxScore = 0;
-
-    // Get text element (best match)
     currentPageTexts.items.forEach(el => {
         let score = (el.str.toLowerCase().includes(name.toLowerCase())? 10000 : 0) - el.str.length;
 
@@ -114,54 +126,69 @@ function GetColValues(name) {
         }
     })
 
+    // If none found, return nothing
     if (colText == undefined || !colText.str.trim())
         return [];
 
-    let colXleft = colText.transform[4] - (colText.width / 2);
+    // Positions of the column title
+    let colXleft = colText.transform[4] - (colText.width / 2); // May not be working
     let colXcenter = colText.transform[4];
     let colY = colText.transform[5];
 
-    let res = [];
+    let res = []; // Results
 
+    // For each text element in the page
     currentPageTexts.items.forEach(text => {
-        let xleft = text.transform[4] - (text.width / 2);
+        // Get text positions
+        let xleft = text.transform[4] - (text.width / 2); // May not be working
         let xCenter = text.transform[4];
         let y = text.transform[5];
-
-        if (Math.abs(colXcenter - xCenter) < maxXDiff) {
-            if (y < colY) {
-                if (text.str && text.str.trim()) {
-                    res.push(text);
+        
+        if (Math.abs(colXcenter - xCenter) < maxXDiff) { // If x difference is smaller than limit
+            if (y < colY) { // If text is below column name
+                if (text.str && text.str.trim()) { // If text is not empty
+                    res.push(text); // Add to results!
                 }
             }
         }
     });
 
-    console.log(res);
+    // Get only text content
     return res.map(text => text.str);
 }
 
+// Get CSVfile and start downloading
 function GetFile() {
-    let name = fileNameInput.value + ".csv";
+    // Name of the file
+    let name;
+    if (!fileNameInput.value || !fileNameInput.value.trim()) // Get name of PDF if no name specified
+        name = docFile.name.replace(".pdf", ".csv");
+    else
+        name = fileNameInput.value + ".csv";
 
+    // Add column names
     let content = "";
     for (let i = 0; i < tableData.length; i++) {
        content += `"${tableData[i].colname}";`;
     }
     content += "\n"
 
+    // Size of the longest column
     let maxSize = Math.max(...tableData.map(col => col.values.length));
 
+    // For each row
     for (let i = 0; i < maxSize; i++) {
+        // For each column
         for (let j = 0; j < tableData.length; j++) {
             if (i < tableData[j].values.length)
-                content += `"${tableData[j].values[i]}";`;
+                content += `"${tableData[j].values[i]}";`; // Get value
             else 
-                content += " ;"
+                content += " ;" // Empty if longer than column
         }
         content += "\n"
     }
 
+    // Download the file
     const a = document.createElement('a');
     const blob = new Blob([content], {type: "text/plain"});
     const url = URL.createObjectURL(blob);

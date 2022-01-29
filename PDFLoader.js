@@ -1,22 +1,23 @@
-const canvas = document.getElementById("preview-canvas");
-const page = document.querySelector(".page");
-const fileSelector = document.getElementById("file");
-const pageSelector = document.getElementById("page-selector");
+const canvas = document.getElementById("preview-canvas"); // Preview canvas
+const page = document.querySelector(".page"); // Main page
+const fileSelector = document.getElementById("file"); // The file input
+const pageSelector = document.getElementById("page-selector"); // Parent of the page buttons
 
+// Setup PDF.js and canvas
 const ctx = canvas.getContext("2d");
 const pdfjsLib = window['pdfjs-dist/build/pdf'];
 pdfjsLib.GlobalWorkerOptions.workerSrc = 'PdfJS/build/pdf.worker.js';
 
-const previewScale = 0.8;
+var docFile; // The file that was loaded
+var currentDoc; // The PDF document from PDF.js
+var currentPage; // The currect page objects
+var currentPageTexts; // A list of text objects on the current page
+var currentPageId = 1; // The ID of the current page
 
-var docFile;
-var currentDoc;
-var currentPage;
-var currentPageTexts;
-var currentPageId = 1;
-
+// Hide the resuts tab
 page.style.setProperty("grid-template-columns", "100vw auto")
 
+// User dropped a file
 function OnDragDoc(event) {
     event.preventDefault();
     if (event.dataTransfer.items) {
@@ -29,57 +30,66 @@ function OnDragDoc(event) {
     }
 }
 
+// User selected a file
 function OnGetDoc(doc) {
     docFile = doc;
     let fileReader = new FileReader();
 
     fileReader.onload = function () {
-        page.style.setProperty("grid-template-columns", "500px auto")
-
         var typedarray = new Uint8Array(this.result);
         const task = pdfjsLib.getDocument(typedarray);
+        // PDF loaded
         task.promise.then(pdf => {
             currentDoc = pdf;
             OnDocLoaded(currentDoc);
         });
     };
 
+    // Load file
     fileReader.readAsArrayBuffer(doc);
 }
 
+// Called when doc is loaded
 function OnDocLoaded() {
-    fileSelector.classList.remove("big");
+    page.style.setProperty("grid-template-columns", "500px auto") // Display the resuts tab
+    fileSelector.classList.remove("big"); // Change file input style
     fileSelector.classList.add("small");
-    pageSelector.classList.remove("transparent");
+    pageSelector.classList.remove("transparent"); // Display the page selector
     selectPage();
 }
 
+// Called when a page is loaded
 async function OnPageLoaded() {
     var textContent = currentPage.getTextContent();
     currentPageTexts = await textContent.then(text => text);
 }
 
+// Update preview, update
 function selectPage() {
-    // Using promise to fetch the page
+    // Get the page
     currentDoc.getPage(currentPageId).then(function (page) {
         currentPage = page;
-        OnPageLoaded()
+        OnPageLoaded();
+
+        // TODO: execute that only once per document
         let viewport = page.getViewport({ scale: 0.8 });
         let newScale = canvas.width / viewport.width;
         viewport = page.getViewport({ scale: newScale });
 
+        // Set canvas size
         canvas.height = viewport.height;
         canvas.width = viewport.width;
 
-        // Render PDF page into canvas context
+        // Render PDF page
         var renderContext = {
             canvasContext: ctx,
             viewport: viewport
         };
-        var renderTask = page.render(renderContext);
+        // TODO: get promise variable and prevent rendering two page at the same time
+        page.render(renderContext);
     });
 
-    // Update page counters
+    // Update page counter
     document.getElementById("page-id").innerHTML = `${currentPageId} / ${currentDoc.numPages}`;
 }
 
@@ -97,6 +107,7 @@ function PreviousPage() {
     }
 }
 
+// Open PDF in a new tab
 function OpenPDF() {
     window.open(URL.createObjectURL(docFile), "_blank");
 }

@@ -12,18 +12,22 @@
     <title>PDF Tools</title>
 </head>
 
-<body>
+<body class="no-overflow">
     <nav>
         <p class="title"><span>PDF</span> Tools </p>
         <p class="version">Alpha</p>
     </nav>
+    
     <div class="page">
         <div id="fileSelector">
+            <!--File selector-->
             <input type="file" id="file" class="file-input big" accept=".pdf" onchange="OnGetDoc(this.files[0])">
             <label for="file" ondrop="OnDragDoc(event)" ondragover="event.preventDefault();">
                 <span class="material-icons">picture_as_pdf</span>
                 <p>Glissez-déposez un fichier ou cliquez pour séléctionner</p>
             </label>
+
+            <!--Page buttons-->
             <div id="page-selector" class="transparent">
                 <button onclick="PreviousPage()" class="circlebtn">
                     <span class="material-icons">arrow_back</span>
@@ -38,18 +42,25 @@
                     <span class="material-icons">open_in_new</span>
                 </button>
             </div>
+
+            <!--Preview canvas-->
             <div id="preview-canvas-parent">
                 <canvas id="preview-canvas">
 
                 </canvas>
             </div>
         </div>
+
+
         <div id="results">
             <div id="table-view">
+                <!--Grid for the results-->
                 <div id="res-grid">
+                    <!--Results added with javascript-->
                 </div>
+
                 <div id="res-settings">
-                    <div class="flex-row">
+                    <div class="flex-row"> <!--Add column input-->
                         <input type="text" class="textinput" id="new-col-input" placeholder="Nouvelle colonne...">
                         <button onclick="AddColumn()" class="circlebtn">
                             <span class="material-icons">add</span>
@@ -69,6 +80,8 @@
                     </button>
                 </div>
             </div>
+
+            <!--Download menu-->
             <div id="download">
                 <input type="text" class="textinput" id="file-name" placeholder="Nom du fichier">
                 <span>.csv</span>
