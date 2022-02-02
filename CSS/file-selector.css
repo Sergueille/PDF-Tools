@@ -26,19 +26,17 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    border: 3px dashed var(--bg-ll);
 }
 
 .file-input.big + label {
     width: 60%;
     height: 400px;
-    border: 3px dashed var(--bg-ll)
 }
 
 .file-input.small + label {
     width: 90%;
     height: 3rem;
-    background-color: var(--bg);
-    border-radius: 10px;
 }
 
 .file-input + label > p {
