@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <link href="CSS/index.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>PDF Tools</title>
+</head>
+
+<body>
+    <nav>
+        <p class="title"><span>PDF</span> Tools </p>
+        <p class="version">Alpha</p>
+        <div class="flex-grow"></div>
+    </nav>
+
+    <div class="page">
+        <h1>
+            <span class="material-icons">
+                live_help
+            </span>
+            Page d'aide
+        </h1>
+
+        <h2 id="decalX">
+            Décalage X
+        </h2>
+        <p>
+            Ce paramètre permet de spécifier la différence maximale sur l'axe X pour qu'une valeur soit admise dans une colonne.<br/>
+            Utilisez des valeurs autour de 15 pour les petites colonnes, et autour de 80 pour des colonnes plus grandes avec des valeurs non centrées.
+        </p>
+
+        <h2 id="reference-column">
+            Colonne de référence
+        </h2>
+        <p>
+            La colonne de référence va servir à aligner verticalement les valeurs des autres colonnes.
+            Une seule colonne de référence peut être séléctionnée.<br/>
+            Certraines cases seront alors laissées vides et d'autres pourront être concatenées.<br/>
+            Pour désactiver ce comportement, décochez la case "<a class="link" href="#align-with-ref">aligner les valeurs avec la colonne de référence</a>" 
+            sur les colonnes souhaitées.
+        </p>
+
+        <h2 id="align-with-ref">
+            Aligner les valeurs avec la colonne de référence
+        </h2>
+        <p>
+            Si cette case est cochée, les valuers seront toujours alignées avec la <a class="link" href="#reference-column">colonne de référence</a>.
+            Certraines cases seront alors laissées vides et d'autres pourront être concatenées.
+        </p>
+
+        <div class="help-example">
+            <div>
+                <span>Document de base :</span>
+                <table>
+                    <tr>
+                        <td>Colonne de référence</td>
+                        <td>Colonne 1</td>
+                        <td>Colonne 2</td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>A</td>
+                        <td>A</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td></td>
+                        <td>B</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="2">3</td>
+                        <td rowspan="2">B</td>
+                        <td>C</td>
+                    </tr>
+                    <tr>
+                        <td>D</td>
+                    </tr>
+                </table>
+            </div>
+            <div>
+                <span>Desactivé :</span>
+                <table>
+                    <tr>
+                        <td>Colonne de référence</td>
+                        <td>Colonne 1</td>
+                        <td>Colonne 2</td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>A</td>
+                        <td>A</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>B</td>
+                        <td>B</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td></td>
+                        <td>C</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td>D</td>
+                    </tr>
+                </table>
+            </div>
+            <div>
+                <span>Activé :</span>
+                <table>
+                    <tr>
+                        <td>Colonne de référence</td>
+                        <td>Colonne 1</td>
+                        <td>Colonne 2</td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>A</td>
+                        <td>A</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td></td>
+                        <td>B</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>B</td>
+                        <td>C D</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+
+        <h2 id="no-values">
+            Aucune valeur ne s'affiche!
+        </h2>
+        <ul>
+            <li>Le texte ne peut être détecté que si il est sous forme de texte, les images ne sont pas reconnues</li>
+            <li>Vous devez avoir sélectionné la bonne page</li>
+            <li>Vérifiez l'orthographe du nom de la colonne</li>
+            <li>Si les valeurs ne sont pas bien alignées sur le document, utilisez un <a class="link" href="#decalX">Décalage X</a> plus grand</li>
+            <li>Le titre de la colonne doit être sur une ligne sur le document. Si ce n'est pas le cas, entrez uniquement une ligne</li>
+        </ul>
+
+        <h2 id="wrong-values">
+            Les valeurs sont incorrectes!
+        </h2>
+        <ul>
+            <li>Vous n'avez pas séléctionné la bonne <a class="link" href="#reference-column">colonne de référence</a></li>
+            <li>Le <a class="link" href="#decalX">Décalage X</a> peut être trop grand et la colonne contient les valeurs de ses voisines</li>
+            <li>Le titre de colonne n'a pas été bien détecté</li>
+        </ul>
+    </div>
+
+    <footer>
+        <a class="btn" href="index.html">
+            <span class="material-icons">
+                arrow_back
+            </span>
+            Retour à l'outil
+        </a>
+    </footer>
+</body>
+
+</html>

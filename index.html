@@ -17,12 +17,9 @@
         <p class="title"><span>PDF</span> Tools </p>
         <p class="version">Alpha</p>
         <div class="flex-grow"></div>
-        <a class="btn circlebtn">
-            <span class="material-icons">help</span>
-        </a>
     </nav>
 
-    <div class="page">
+    <div class="table-extractor">
         <div id="fileSelector">
             <!--File selector-->
             <input type="file" id="file" class="file-input big" accept=".pdf" onchange="OnGetDoc(this.files[0])">
@@ -80,18 +77,32 @@
                         <select id="setting-select" class="select" onchange="SelectColumn()">
                         </select>
 
-                        <label>Décalage X maximum</label>
+                        <label>
+                            Décalage X maximum
+                            <a class="helpbtn" href="help.html#decalX" target="_blank">
+                                <span class="material-icons">help</span>
+                            </a>
+                        </label>
                         <input id="max-x-diff" type="number" class="textinput" value="15" onchange="ApplySettings()">
 
                         <div>
                             <input id="reference-column" type="checkbox" class="checkbox" onchange="ApplySettings()">
-                            <label for="reference-column">Utiliser comme colonne de référence</label>
+                            <label for="reference-column">
+                                Utiliser comme colonne de référence
+                                <a class="helpbtn" href="help.html#reference-column" target="_blank">
+                                    <span class="material-icons">help</span>
+                                </a>
+                            </label>
                         </div>
 
                         <div>
                             <input id="align-values" type="checkbox" class="checkbox" onchange="ApplySettings()">
-                            <label for="align-values">Laisser des valeurs vides pour aligner avec la colonne de
-                                référence</label>
+                            <label for="align-values">
+                                Aligner les valeurs avec la colonne de référence
+                                <a class="helpbtn" href="help.html#align-with-ref" target="_blank">
+                                    <span class="material-icons">help</span>
+                                </a>
+                            </label>
                         </div>
 
                         <button onclick="DeleteColumn(settingsDropdown.value)">
@@ -103,7 +114,7 @@
                     <div class="tip">
                         <span class="material-icons">lightbulb</span>
                         <strong>Astuce:</strong><br />
-                        Cliquez sur le nom d'un colonne dans le tableau pour la renommer. 
+                        Cliquez sur le nom d'un colonne dans le tableau pour la renommer.
                         Laissez vide pour la supprimer.
                     </div>
                     <div class="tip">

@@ -40,8 +40,6 @@ function AddColumn() {
         alignValues: true, // Should values be duplicated when there is a hole in the table
     });
 
-    tableData[tableData.length - 1].values = GetColValues(tableData[tableData.length - 1]); // Get values from doc
-
     // First columns
     if (tableData.length === 1)
     {
@@ -49,6 +47,8 @@ function AddColumn() {
         mainColumn = selectedColumn;
         UpdateSettingsUI();
     }
+
+    tableData[tableData.length - 1].values = GetColValues(tableData[tableData.length - 1]); // Get values from doc
 
     DisplayTable(); // Update UI
     UpdateSettingsDropdown();
@@ -181,7 +181,7 @@ function GetColValues(column) {
     let res = []; // Results
 
     let isMainColumn = column == mainColumn;
-    let mustAlign = column.alignValues && !isMainColumn;
+    let mustAlign = column.alignValues && !isMainColumn && mainColumn != undefined;
     let excpectedNearestElement = 0;
 
     if (isMainColumn)

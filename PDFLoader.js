@@ -1,5 +1,5 @@
 const canvas = document.getElementById("preview-canvas"); // Preview canvas
-const page = document.querySelector(".page"); // Main page
+const page = document.querySelector(".table-extractor"); // Main page
 const fileSelector = document.getElementById("file"); // The file input
 const pageSelector = document.getElementById("page-selector"); // Parent of the page buttons
 

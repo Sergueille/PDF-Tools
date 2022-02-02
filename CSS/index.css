@@ -1,10 +1,9 @@
 * {
-    --txt: #ddd;
+    --txt: #ccc;
     --txt-d: #aaa;
-    --bg: #151515;
+    --bg: #1d1d1d;
     --bg-2: #1d1d1d;
-    --bg-l: #222;
-    --bg-l2: #252525;
+    --bg-l: #252525;
     --bg-ll: #333;
     --prim: #d61a1a;
     --prim-d: #a5311d;
@@ -50,7 +49,14 @@ nav {
 
 h1 {
     font-weight: 500;
-    font-size: 3rem !important;
+    font-size: 4rem !important;
+}
+
+h1 > span {
+    font-size: 3.5rem !important;
+    vertical-align: baseline;
+    position: relative;
+    top: 4px;
 }
 
 h2 {
@@ -69,7 +75,6 @@ nav > .title {
     font-size: 2rem;
 }
 
-.page > .title > span,
 nav > .title > span {
     font-weight: 600;
     color: var(--prim);
@@ -94,7 +99,8 @@ button {
 }
 
 .btn:hover,
-button:hover {
+button:hover,
+.helpbtn:hover > span  {
     transform: scale(110%);
 }
 
@@ -127,6 +133,11 @@ button > span {
     margin: 0 !important;
 }
 
+.helpbtn > span {
+    color: var(--txt-d);
+    font-size: 1.2em;
+}
+
 input.textinput {
     color: var(--txt);
     border: none;
@@ -155,7 +166,7 @@ input.textinput:focus {
 
 .link {
     font-weight: 700;
-    color: var(--prim);
+    color: var(--prim-d);
 }
 
 .fade {
@@ -164,6 +175,20 @@ input.textinput:focus {
 }
 
 .page {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 6rem 20px 0 20px;
+    max-width: 1500px;
+    margin: auto;
+}
+
+.page > * {
+    margin: 10px;
+}
+
+.table-extractor {
     transition: 500ms;
     display: grid;
     grid-template-columns: 500px auto;
@@ -214,4 +239,52 @@ input.textinput:focus {
 
 .flex-grow {
     flex-grow: 5;
+}
+
+.help-example {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: stretch;
+    position: relative;
+    padding: 20px;
+    border: 2px solid rgb(0, 83, 0);
+    border-radius: 10px;
+}
+
+.help-example > *,
+.help-example > div > * {
+    margin: 5px;
+}
+
+.help-example::before {
+    content: "Exemple :";
+    position: absolute;
+    top: calc(-0.5rem - 4px);
+    background-color: rgb(0, 83, 0);
+    border-radius: calc(0.5rem + 2px);
+    padding: 2px 15px;
+}
+
+.help-example > div > table,
+.help-example > div > table > tbody > tr > td {
+    border: 1px solid var(--bg-ll);
+    border-collapse: collapse;
+    text-align: center;
+    padding: 0 5px;
+    line-height: 1.5rem;
+}
+
+footer {
+    margin-top: 30px;
+    height: 5rem;
+    background-color: var(--bg-l);
+    width: 100%;
+    padding: 0 30px;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
 }
