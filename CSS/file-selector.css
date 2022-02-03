@@ -59,13 +59,15 @@
    display: none;
 }
 
-#page-selector {
+#page-selector,
+#page-selector-multiple {
     display: flex;
     flex-direction: row;
     align-items: center;
 }
 
-#page-selector > * {
+#page-selector > *,
+#page-selector-multiple > * {
     margin: 5px;
     font-size: 1.5rem;
 }

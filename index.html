@@ -6,6 +6,7 @@
     <link href="CSS/index.css" rel="stylesheet">
     <link href="CSS/file-selector.css" rel="stylesheet">
     <link href="CSS/results.css" rel="stylesheet">
+    <link href="CSS/popup.css" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -33,7 +34,7 @@
             </label>
 
             <!--Page buttons-->
-            <div id="page-selector" class="transparent">
+            <div id="page-selector" class="no-display">
                 <button onclick="PreviousPage()" class="circlebtn">
                     <span class="material-icons">arrow_back</span>
                 </button>
@@ -45,6 +46,25 @@
                 </button>
                 <button onclick="OpenPDF()" class="circlebtn">
                     <span class="material-icons">open_in_new</span>
+                </button>
+                <button onclick="OpenPopup('multi-select')" class="circlebtn">
+                    <span class="material-icons">content_copy</span>
+                </button>
+            </div>
+
+            <!--Multiple page buttons-->
+            <div id="page-selector-multiple" class="no-display">
+                <span id="multiple-page-id">
+                    X pages sélectionnées
+                </span>
+                <button onclick="" class="circlebtn">
+                    <span class="material-icons">clear</span>
+                </button>
+                <button onclick="OpenPDF()" class="circlebtn">
+                    <span class="material-icons">open_in_new</span>
+                </button>
+                <button onclick="OpenPopup('multi-select')" class="circlebtn">
+                    <span class="material-icons">content_copy</span>
                 </button>
             </div>
 
@@ -151,10 +171,25 @@
             </div>
         </div>
     </div>
+
+    <div id="popup-bg" class="transparent"></div>
+
+    <div class="popup transparent" id="multi-select">
+        <h2>Sélectionner plusieurs pages</h2>
+        <div class="flex-row">
+            <button class="circlebtn">
+                <span class="material-icons">done_all</span>
+            </button>
+            <button class="circlebtn">
+                <span class="material-icons">clear</span>
+            </button>
+        </div>
+    </div>
 </body>
 
 <script src="PdfJS/build/pdf.js"></script>
 <script src="PDFLoader.js"></script>
 <script src="TableExtractor.js"></script>
+<script src="PopupHandler.js"></script>
 
 </html>

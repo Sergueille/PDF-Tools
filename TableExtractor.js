@@ -166,14 +166,14 @@ function DisplayTable() {
 // Get values for a column
 function GetColValues(column, ignoreMainCol = false) {
     // Return if no page selected or no text in page
-    if (!currentPageTexts || currentPageTexts.items.length === 0)
+    if (!currentPageTexts || currentPageTexts.length === 0)
         return [];
 
     // Search for column title
     // Get shorter text element that contains the name
     let colText = undefined; // Result
     let maxScore = 0;
-    currentPageTexts.items.forEach(el => {
+    currentPageTexts.forEach(el => {
         let score = (el.str.toLowerCase().includes(column.colname.toLowerCase()) ? 10000 : 0) - el.str.length;
 
         if (score > maxScore) {
@@ -201,7 +201,7 @@ function GetColValues(column, ignoreMainCol = false) {
         mainColumnValuesPos = [];
 
     // For each text element in the page
-    currentPageTexts.items.forEach(text => {
+    currentPageTexts.forEach(text => {
         // Get text positions
         let xleft = text.transform[4] - (text.width / 2); // May not be working
         let xCenter = text.transform[4];

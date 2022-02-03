@@ -206,7 +206,12 @@ input.textinput:focus {
 }
 
 .transparent {
-    opacity: 0;
+    opacity: 0 !important;
+    pointer-events: none;
+}
+
+.no-display {
+    display: none !important;
 }
 
 .flex-row {
@@ -215,6 +220,10 @@ input.textinput:focus {
     flex-direction: row;
     align-items: center;
     justify-content: stretch;
+}
+
+.flex-row > * {
+    margin: 0 5px;
 }
 
 .tip {
