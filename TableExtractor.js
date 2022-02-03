@@ -7,6 +7,9 @@ const settingsDropdown = document.getElementById("setting-select");
 const maxXDiffInput = document.getElementById("max-x-diff");
 const referenceColumnCheck = document.getElementById("reference-column");
 const alignValuesCheck = document.getElementById("align-values");
+const truncateCheck = document.getElementById("truncate-check");
+
+const Ymargin = 5;
 
 // All the data of the table
 // See AddColumn() for object structure
@@ -15,6 +18,8 @@ var tableData = [];
 var selectedColumn; // Selected column in setting tab
 var mainColumn; // Column to refer to for y alignement
 var mainColumnValuesPos; // Y position of the values in the main column
+var truncateColumn; // Column to refer to for table truncation
+var truncateMinY = -1; // THe min Y allowed to allow value in the table
 
 UpdateSettingsUI();
 
@@ -41,8 +46,7 @@ function AddColumn() {
     });
 
     // First columns
-    if (tableData.length === 1)
-    {
+    if (tableData.length === 1) {
         selectedColumn = tableData[0]; // Select
         mainColumn = selectedColumn;
         UpdateSettingsUI();
@@ -86,7 +90,7 @@ function DeleteColumn(id) {
             mainColumn = tableData[0]
         else
             mainColumn = null;
-        
+
         UpdateSettingsUI();
     }
 
@@ -98,8 +102,15 @@ function DeleteColumn(id) {
 
 // Refresh all values
 function RefreshAll() {
+    if (truncateColumn)
+        truncateColumn.values = GetColValues(truncateColumn);
+
+    if (mainColumn)
+        mainColumn.values = GetColValues(mainColumn);
+
     tableData.forEach(column => {
-        column.values = GetColValues(column) // Get new values
+        if (column != mainColumn)
+            column.values = GetColValues(column); // Get new values
     })
 
     DisplayTable();
@@ -161,7 +172,7 @@ function GetColValues(column) {
     let colText = undefined; // Result
     let maxScore = 0;
     currentPageTexts.items.forEach(el => {
-        let score = (el.str.toLowerCase().includes(column.colname.toLowerCase())? 10000 : 0) - el.str.length;
+        let score = (el.str.toLowerCase().includes(column.colname.toLowerCase()) ? 10000 : 0) - el.str.length;
 
         if (score > maxScore) {
             maxScore = score;
@@ -193,39 +204,46 @@ function GetColValues(column) {
         let xleft = text.transform[4] - (text.width / 2); // May not be working
         let xCenter = text.transform[4];
         let y = text.transform[5];
-        
+
         if (Math.abs(colXcenter - xCenter) < column.maxXDiff) { // If x difference is smaller than limit
             if (y < colY) { // If text is below column name
                 if (text.str && text.str.trim()) { // If text is not empty
-                    let canAdd = true;
-                    if (mustAlign) { // Align values
-                        let nearest = GetNearestElementIDOfMainColumn(y);
+                    if (!truncateColumn || truncateMinY == -1 || column == truncateColumn || y >= truncateMinY - Ymargin) { // If can't truncate or not truncated
+                        let canAdd = true;
+                        if (mustAlign) { // Align values
+                            let nearest = GetNearestElementIDOfMainColumn(y);
 
-                        if (nearest < excpectedNearestElement) { // New line of value
-                            res[nearest] += " " + text.str;
-                            canAdd = false;
-                        } 
-                        else {
-                            let emptyCount = nearest - excpectedNearestElement; // Get number of values that have been skipped
-                            for (let i = 0; i < emptyCount; i++) {
-                                res.push("") // Fill empty
+                            if (nearest < excpectedNearestElement) { // New line of value
+                                res[nearest][0] += " " + text.str;
+                                canAdd = false;
                             }
-                            excpectedNearestElement += emptyCount + 1;
+                            else {
+                                let emptyCount = nearest - excpectedNearestElement; // Get number of values that have been skipped
+                                for (let i = 0; i < emptyCount; i++) {
+                                    res.push(["", 0]) // Fill empty
+                                }
+                                excpectedNearestElement += emptyCount + 1;
+                            }
                         }
+
+                        if (canAdd)
+                            res.push([text.str, y]); // Add to results!
+
+                        if (isMainColumn) // Update main column v,alues pos
+                            mainColumnValuesPos.push(y)
                     }
-
-                    if (canAdd)
-                        res.push(text.str); // Add to results!
-
-                    if (isMainColumn) // Update main column values pos
-                        mainColumnValuesPos.push(y)
                 }
             }
         }
     });
 
+    // Get truncation min
+    if (column == truncateColumn) {
+        truncateMinY = res[res.length - 1][1];
+    }
+
     // Get only text content
-    return res;
+    return res.map(el => el[0]);
 }
 
 // Get the id of the nearest value in main column
@@ -256,7 +274,7 @@ function GetFile() {
     // Add column names
     let content = "";
     for (let i = 0; i < tableData.length; i++) {
-       content += `"${tableData[i].colname}";`;
+        content += `"${tableData[i].colname}";`;
     }
     content += "\n"
 
@@ -269,7 +287,7 @@ function GetFile() {
         for (let j = 0; j < tableData.length; j++) {
             if (i < tableData[j].values.length)
                 content += `"${tableData[j].values[i]}";`; // Get value
-            else 
+            else
                 content += " ;" // Empty if longer than column
         }
         content += "\n"
@@ -277,7 +295,7 @@ function GetFile() {
 
     // Download the file
     const a = document.createElement('a');
-    const blob = new Blob([content], {type: "text/plain"});
+    const blob = new Blob([content], { type: "text/plain" });
     const url = URL.createObjectURL(blob);
     a.setAttribute('href', url);
     a.setAttribute('download', name);
@@ -303,33 +321,41 @@ function UpdateSettingsDropdown() {
 
 // Update the settins UI EXCEPT FOR THE DROPDOWN
 function UpdateSettingsUI() {
-    if (selectedColumn)
-    {
+    if (selectedColumn) {
         document.getElementById("res-settings-inner").classList.remove("transparent")
-        maxXDiffInput.value = selectedColumn.maxXDiff; 
+        maxXDiffInput.value = selectedColumn.maxXDiff;
         alignValuesCheck.checked = selectedColumn.alignValues;
         referenceColumnCheck.checked = selectedColumn == mainColumn;
+        truncateCheck.checked = selectedColumn == truncateColumn;
     }
-    else
-    {
+    else {
         document.getElementById("res-settings-inner").classList.add("transparent");
     }
 }
 
 function ApplySettings() {
+    selectedColumn.maxXDiff = maxXDiffInput.value;
+    selectedColumn.alignValues = alignValuesCheck.checked;
+
     if (!selectedColumn)
         return;
 
-    selectedColumn.maxXDiff = maxXDiffInput.value;
-    selectedColumn.alignValues = alignValuesCheck.checked;
-    if (referenceColumnCheck.checked && selectedColumn != mainColumn)
-    {
+    if (referenceColumnCheck.checked && selectedColumn != mainColumn) { // Change main column
         mainColumn = selectedColumn;
-        selectedColumn.values = GetColValues(selectedColumn);
         RefreshAll();
     }
-    else if (!referenceColumnCheck.checked && selectedColumn == mainColumn) {
+    else if (!referenceColumnCheck.checked && selectedColumn == mainColumn) { // Keep checked
         referenceColumnCheck.checked = true;
+    }
+
+    if (truncateCheck.checked && selectedColumn != truncateColumn) { // Change truncate column
+        truncateColumn = selectedColumn;
+        RefreshAll();
+    }
+    else if (!truncateCheck.checked && selectedColumn == truncateColumn) { // Disable
+        truncateColumn = null;
+        truncateMinY = -1;
+        RefreshAll();
     }
 
     selectedColumn.values = GetColValues(selectedColumn); // Update values

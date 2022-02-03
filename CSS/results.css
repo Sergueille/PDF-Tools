@@ -9,16 +9,18 @@
 #table-view {
     width: 100%;
     display: flex;
+    overflow: hidden;
 }
 
 #res-grid {
+    align-content: start;
     display: grid;
     width: 100%;
     grid-auto-rows: auto;
     grid-template-columns: repeat(2, 10px);
     grid-auto-flow: column;
 
-    height: calc(100vh - 12rem);
+    max-height: 100%;
     overflow: auto;
 
     border-radius: 10px;
