@@ -8,8 +8,8 @@
 
 #table-view {
     width: 100%;
+    height: calc(100vh - 11rem);
     display: flex;
-    overflow: hidden;
 }
 
 #res-grid {
