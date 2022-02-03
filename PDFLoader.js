@@ -8,6 +8,9 @@ const ctx = canvas.getContext("2d");
 const pdfjsLib = window['pdfjs-dist/build/pdf'];
 pdfjsLib.GlobalWorkerOptions.workerSrc = 'PdfJS/build/pdf.worker.js';
 
+const previewResolution = 0.5; // Smaller values for high resolition. Don't know why.
+var pageViewport; // The viewport of the page, must be retrieved from PDF.JS once! Why? Because it increase tne resolution each time until it chrash.
+
 var docFile; // The file that was loaded
 var currentDoc; // The PDF document from PDF.js
 var currentPage; // The currect page objects
@@ -24,7 +27,7 @@ function OnDragDoc(event) {
         if (event.dataTransfer.items[0].kind === 'file') {
             OnGetDoc(event.dataTransfer.items[0].getAsFile());
         }
-    } 
+    }
     else {
         OnGetDoc(dataTransfer.files[0]);
     }
@@ -55,6 +58,8 @@ function OnDocLoaded() {
     fileSelector.classList.remove("big"); // Change file input style
     fileSelector.classList.add("small");
     pageSelector.classList.remove("transparent"); // Display the page selector
+    pageViewport = null; // Remove viewport to create another
+    currentPageId = 1;
     selectPage();
 }
 
@@ -72,19 +77,20 @@ function selectPage() {
         currentPage = page;
         OnPageLoaded();
 
-        // TODO: execute that only once per document
-        let viewport = page.getViewport({ scale: 0.8 });
-        let newScale = canvas.width / viewport.width;
-        viewport = page.getViewport({ scale: newScale });
+        if (!pageViewport) {
+            pageViewport = page.getViewport({ scale: previewResolution });
+            let newScale = canvas.width / pageViewport.width;
+            pageViewport = page.getViewport({ scale: newScale });
+        }
 
         // Set canvas size
-        canvas.height = viewport.height;
-        canvas.width = viewport.width;
+        canvas.height = pageViewport.height;
+        canvas.width = pageViewport.width;
 
         // Render PDF page
         var renderContext = {
             canvasContext: ctx,
-            viewport: viewport
+            viewport: pageViewport
         };
         // TODO: get promise variable and prevent rendering two page at the same time
         page.render(renderContext);

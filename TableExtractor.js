@@ -56,6 +56,8 @@ function AddColumn() {
 
     DisplayTable(); // Update UI
     UpdateSettingsDropdown();
+
+    newColInput.value = "";
 }
 
 function RenameColumn(id, name) {
@@ -103,7 +105,7 @@ function DeleteColumn(id) {
 // Refresh all values
 function RefreshAll() {
     if (truncateColumn)
-        truncateColumn.values = GetColValues(truncateColumn);
+        truncateColumn.values = GetColValues(truncateColumn, true);
 
     if (mainColumn)
         mainColumn.values = GetColValues(mainColumn);
@@ -162,7 +164,7 @@ function DisplayTable() {
 }
 
 // Get values for a column
-function GetColValues(column) {
+function GetColValues(column, ignoreMainCol = false) {
     // Return if no page selected or no text in page
     if (!currentPageTexts || currentPageTexts.items.length === 0)
         return [];
@@ -192,7 +194,7 @@ function GetColValues(column) {
     let res = []; // Results
 
     let isMainColumn = column == mainColumn;
-    let mustAlign = column.alignValues && !isMainColumn && mainColumn != undefined;
+    let mustAlign = column.alignValues && !isMainColumn && mainColumn && !ignoreMainCol;
     let excpectedNearestElement = 0;
 
     if (isMainColumn)
