@@ -163,8 +163,16 @@ function DisplayTable() {
     }
 }
 
-// Get values for a column
 function GetColValues(column, ignoreMainCol = false) {
+    res = [];
+    currentPages.forEach(page => {
+        res.push(...GetColValuesOnPage(column, page, ignoreMainCol));
+    });
+    return res;
+}
+
+// Get values for a column
+function GetColValuesOnPage(column, page, ignoreMainCol = false) {
     // Return if no page selected or no text in page
     if (!currentPageTexts || currentPageTexts.length === 0)
         return [];

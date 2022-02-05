@@ -7,6 +7,7 @@
     <link href="CSS/file-selector.css" rel="stylesheet">
     <link href="CSS/results.css" rel="stylesheet">
     <link href="CSS/popup.css" rel="stylesheet">
+    <link href="CSS/multi-selection.css" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -47,7 +48,7 @@
                 <button onclick="OpenPDF()" class="circlebtn">
                     <span class="material-icons">open_in_new</span>
                 </button>
-                <button onclick="OpenPopup('multi-select')" class="circlebtn">
+                <button onclick="OpenMultiSelection()" class="circlebtn">
                     <span class="material-icons">content_copy</span>
                 </button>
             </div>
@@ -63,7 +64,7 @@
                 <button onclick="OpenPDF()" class="circlebtn">
                     <span class="material-icons">open_in_new</span>
                 </button>
-                <button onclick="OpenPopup('multi-select')" class="circlebtn">
+                <button onclick="OpenMultiSelection()" class="circlebtn">
                     <span class="material-icons">content_copy</span>
                 </button>
             </div>
@@ -174,22 +175,55 @@
 
     <div id="popup-bg" class="transparent"></div>
 
-    <div class="popup transparent" id="multi-select">
+    <div class="popup" id="multi-select">
         <h2>Sélectionner plusieurs pages</h2>
         <div class="flex-row">
             <button class="circlebtn">
                 <span class="material-icons">done_all</span>
             </button>
-            <button class="circlebtn">
+            <button class="circlebtn" onclick="ClosePopup()">
                 <span class="material-icons">clear</span>
             </button>
+        </div>
+        <div id="pages-view">
+            <div class="small-preview">
+                <canvas></canvas>
+                <button class="page-check">
+                    <span class="material-icons">done</span>
+                </button>
+            </div>
+            <div class="small-preview">
+                <canvas></canvas>
+                <button class="page-check">
+                    <span class="material-icons">done</span>
+                </button>
+            </div>
+            <div class="small-preview">
+                <canvas></canvas>
+                <button class="page-check">
+                    <span class="material-icons">done</span>
+                </button>
+            </div>
+            <div class="small-preview">
+                <canvas></canvas>
+                <button class="page-check">
+                    <span class="material-icons">done</span>
+                </button>
+            </div>
+            <div class="small-preview">
+                <canvas></canvas>
+                <button class="page-check">
+                    <span class="material-icons">done</span>
+                </button>
+            </div>
         </div>
     </div>
 </body>
 
 <script src="PdfJS/build/pdf.js"></script>
-<script src="PDFLoader.js"></script>
-<script src="TableExtractor.js"></script>
-<script src="PopupHandler.js"></script>
+<script src="Scripts/PDFLoader.js"></script>
+<script src="Scripts/TableExtractor.js"></script>
+<script src="Scripts/PopupHandler.js"></script>
+<script src="Scripts/PageSelection.js"></script>
 
 </html>
