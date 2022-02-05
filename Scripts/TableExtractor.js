@@ -17,9 +17,14 @@ var tableData = [];
 
 var selectedColumn; // Selected column in setting tab
 var mainColumn; // Column to refer to for y alignement
-var mainColumnValuesPos; // Y position of the values in the main column
+var mainColumnValuesPos = []; // Y position of the values in the main column
 var truncateColumn; // Column to refer to for table truncation
-var truncateMinY = -1; // THe min Y allowed to allow value in the table
+var truncateMinY = []; // THe min Y allowed to allow value in the table
+
+for (let i = 0; i < 100; i++) {
+    mainColumnValuesPos.push([]);
+    truncateMinY.push(-1);
+}
 
 UpdateSettingsUI();
 
@@ -163,17 +168,23 @@ function DisplayTable() {
     }
 }
 
-// Get values for a column
 function GetColValues(column, ignoreMainCol = false) {
-    // Return if no page selected or no text in page
-    if (!currentPageTexts || currentPageTexts.items.length === 0)
-        return [];
+    res = [];
 
+    for (let id = 0; id < currentPagesId.length; id++) {
+        res.push(...GetColValuesOnPage(column, id, ignoreMainCol));
+    }
+    return res;
+}
+
+// Get values for a column
+// The page id is the id of the page in the selected pages, not in the document
+function GetColValuesOnPage(column, pageId, ignoreMainCol = false) {
     // Search for column title
     // Get shorter text element that contains the name
     let colText = undefined; // Result
     let maxScore = 0;
-    currentPageTexts.items.forEach(el => {
+    currentPageTexts[pageId].forEach(el => {
         let score = (el.str.toLowerCase().includes(column.colname.toLowerCase()) ? 10000 : 0) - el.str.length;
 
         if (score > maxScore) {
@@ -197,11 +208,12 @@ function GetColValues(column, ignoreMainCol = false) {
     let mustAlign = column.alignValues && !isMainColumn && mainColumn && !ignoreMainCol;
     let excpectedNearestElement = 0;
 
-    if (isMainColumn)
-        mainColumnValuesPos = [];
-
+    if (isMainColumn) {
+        mainColumnValuesPos[pageId] = [];
+    }
+        
     // For each text element in the page
-    currentPageTexts.items.forEach(text => {
+    currentPageTexts[pageId].forEach(text => {
         // Get text positions
         let xleft = text.transform[4] - (text.width / 2); // May not be working
         let xCenter = text.transform[4];
@@ -210,10 +222,10 @@ function GetColValues(column, ignoreMainCol = false) {
         if (Math.abs(colXcenter - xCenter) < column.maxXDiff) { // If x difference is smaller than limit
             if (y < colY) { // If text is below column name
                 if (text.str && text.str.trim()) { // If text is not empty
-                    if (!truncateColumn || truncateMinY == -1 || column == truncateColumn || y >= truncateMinY - Ymargin) { // If can't truncate or not truncated
+                    if (!truncateColumn || column == truncateColumn || y >= truncateMinY[pageId] - Ymargin) { // If can't truncate or not truncated
                         let canAdd = true;
                         if (mustAlign) { // Align values
-                            let nearest = GetNearestElementIDOfMainColumn(y);
+                            let nearest = GetNearestElementIDOfMainColumn(y, pageId);
 
                             if (nearest < excpectedNearestElement) { // New line of value
                                 res[nearest][0] += " " + text.str;
@@ -231,8 +243,8 @@ function GetColValues(column, ignoreMainCol = false) {
                         if (canAdd)
                             res.push([text.str, y]); // Add to results!
 
-                        if (isMainColumn) // Update main column v,alues pos
-                            mainColumnValuesPos.push(y)
+                        if (isMainColumn) // Update main column values pos
+                            mainColumnValuesPos[pageId].push(y)
                     }
                 }
             }
@@ -241,7 +253,7 @@ function GetColValues(column, ignoreMainCol = false) {
 
     // Get truncation min
     if (column == truncateColumn) {
-        truncateMinY = res[res.length - 1][1];
+        truncateMinY[pageId] = res[res.length - 1][1];
     }
 
     // Get only text content
@@ -249,12 +261,12 @@ function GetColValues(column, ignoreMainCol = false) {
 }
 
 // Get the id of the nearest value in main column
-function GetNearestElementIDOfMainColumn(Ypos) {
+function GetNearestElementIDOfMainColumn(Ypos, pageId) {
     let minDist = 10000000;
     let nearest;
 
-    for (let i = 0; i < mainColumnValuesPos.length; i++) {
-        let dist = Math.abs(mainColumnValuesPos[i] - Ypos);
+    for (let i = 0; i < mainColumnValuesPos[pageId].length; i++) {
+        let dist = Math.abs(mainColumnValuesPos[pageId][i] - Ypos);
         if (dist < minDist) {
             minDist = dist;
             nearest = i;
@@ -356,7 +368,6 @@ function ApplySettings() {
     }
     else if (!truncateCheck.checked && selectedColumn == truncateColumn) { // Disable
         truncateColumn = null;
-        truncateMinY = -1;
         RefreshAll();
     }
 

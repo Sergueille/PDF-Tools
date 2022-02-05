@@ -1,0 +1,58 @@
+#pages-view {
+    max-height: calc(100vh - 15rem);
+    width: calc(100vh - 5rem);
+    max-width: 1000px;
+
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 200px);
+    align-content: start;
+    justify-items: center;
+    overflow: auto;
+}
+
+#multi-select > h2 {
+    width: 100%;
+    text-align: left;
+}
+
+.small-preview {
+    position: relative;
+    width: auto;
+    height: auto;
+    margin: 10px;
+}
+
+.small-preview > canvas {
+    width: 100%;
+    height: 100%;
+}
+
+.page-check {
+    position: absolute;
+    right: -0.5rem;
+    top: -0.5rem;
+    width: 2rem;
+    height: 2rem;
+    
+    padding: 0;
+    border-radius: 50%;
+    background-color: var(--bg-l) !important;
+    border: 1px solid #555;
+    box-shadow: none !important;
+}
+
+.page-check.selected {
+    background-color: var(--prim-d) !important;
+    border: none;
+}
+
+.page-check > span {
+    display: none;
+    font-size: 1.5rem;
+    text-align: center;
+    margin: 0;
+}
+
+.page-check.selected > span {
+    display: block;
+}
