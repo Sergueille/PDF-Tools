@@ -58,7 +58,7 @@
                 <span id="multiple-page-id">
                     X pages sélectionnées
                 </span>
-                <button onclick="" class="circlebtn">
+                <button onclick="SelectFirst()" class="circlebtn">
                     <span class="material-icons">clear</span>
                 </button>
                 <button onclick="OpenPDF()" class="circlebtn">
@@ -173,12 +173,16 @@
         </div>
     </div>
 
-    <div id="popup-bg" class="transparent"></div>
+    <div id="popup-bg" class="transparent" onclick="ClosePopup()"></div>
 
-    <div class="popup" id="multi-select">
+    <div class="popup transparent" id="multi-select">
         <h2>Sélectionner plusieurs pages</h2>
         <div class="flex-row">
-            <button class="circlebtn">
+            <button class="colorbtn" onclick="ConfirmSelection()">
+                <span class="material-icons">done</span>
+                Sélectionner
+            </button>
+            <button class="circlebtn" onclick="SelectAll()">
                 <span class="material-icons">done_all</span>
             </button>
             <button class="circlebtn" onclick="ClosePopup()">
@@ -186,36 +190,6 @@
             </button>
         </div>
         <div id="pages-view">
-            <div class="small-preview">
-                <canvas></canvas>
-                <button class="page-check">
-                    <span class="material-icons">done</span>
-                </button>
-            </div>
-            <div class="small-preview">
-                <canvas></canvas>
-                <button class="page-check">
-                    <span class="material-icons">done</span>
-                </button>
-            </div>
-            <div class="small-preview">
-                <canvas></canvas>
-                <button class="page-check">
-                    <span class="material-icons">done</span>
-                </button>
-            </div>
-            <div class="small-preview">
-                <canvas></canvas>
-                <button class="page-check">
-                    <span class="material-icons">done</span>
-                </button>
-            </div>
-            <div class="small-preview">
-                <canvas></canvas>
-                <button class="page-check">
-                    <span class="material-icons">done</span>
-                </button>
-            </div>
         </div>
     </div>
 </body>

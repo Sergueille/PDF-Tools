@@ -32,6 +32,7 @@
     text-align: center;
     line-height: 2rem;
     border: 1px solid var(--bg-l);
+    white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
 }

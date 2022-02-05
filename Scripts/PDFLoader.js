@@ -101,7 +101,7 @@ async function OnPagesLoaded() {
     currentPageTexts = [];
     for (let i = 0; i < currentPages.length; i++) {
         var textContents = await currentPages[i].getTextContent()
-        currentPageTexts.push(...textContents.items);
+        currentPageTexts.push(textContents.items);
     }
 
     RefreshAll();
