@@ -50,9 +50,11 @@ function GetFile() {
 }
 
 function CheckHelp() {
-    if (extensionSelect.value = "help")
+    if (extensionSelect.value === "help")
+    {
         extensionSelect.value = ".xml"
         window.location.assign("help.html#file-help");
+    }
 }
 
 function GetCSV(separator = ";") {
