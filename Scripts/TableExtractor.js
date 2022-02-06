@@ -1,6 +1,5 @@
 const table = document.getElementById("res-grid"); // The results table
 const newColInput = document.getElementById("new-col-input"); // The input for a new column
-const fileNameInput = document.getElementById("file-name"); // The input for the file name
 
 // Settings input
 const settingsDropdown = document.getElementById("setting-select");
@@ -211,7 +210,7 @@ function GetColValuesOnPage(column, pageId, ignoreMainCol = false) {
     if (isMainColumn) {
         mainColumnValuesPos[pageId] = [];
     }
-        
+
     // For each text element in the page
     currentPageTexts[pageId].forEach(text => {
         // Get text positions
@@ -274,46 +273,6 @@ function GetNearestElementIDOfMainColumn(Ypos, pageId) {
     }
 
     return nearest;
-}
-
-// Get CSVfile and start downloading
-function GetFile() {
-    // Name of the file
-    let name;
-    if (!fileNameInput.value || !fileNameInput.value.trim()) // Get name of PDF if no name specified
-        name = docFile.name.replace(".pdf", ".csv");
-    else
-        name = fileNameInput.value + ".csv";
-
-    // Add column names
-    let content = "";
-    for (let i = 0; i < tableData.length; i++) {
-        content += `"${tableData[i].colname}";`;
-    }
-    content += "\n"
-
-    // Size of the longest column
-    let maxSize = Math.max(...tableData.map(col => col.values.length));
-
-    // For each row
-    for (let i = 0; i < maxSize; i++) {
-        // For each column
-        for (let j = 0; j < tableData.length; j++) {
-            if (i < tableData[j].values.length)
-                content += `"${tableData[j].values[i]}";`; // Get value
-            else
-                content += " ;" // Empty if longer than column
-        }
-        content += "\n"
-    }
-
-    // Download the file
-    const a = document.createElement('a');
-    const blob = new Blob([content], { type: "text/plain" });
-    const url = URL.createObjectURL(blob);
-    a.setAttribute('href', url);
-    a.setAttribute('download', name);
-    a.click();
 }
 
 // Update choices in the dorpdown

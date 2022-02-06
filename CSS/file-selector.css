@@ -43,6 +43,9 @@
     font-size: 1.2rem;
     color: var(--txt-d);
     text-align: center;
+    animation: file-input-text-anim 0.8s;
+    animation-fill-mode: backwards;
+    animation-delay: 0.5s;
 }
 
 .file-input.small + label > p {
@@ -53,6 +56,9 @@
     font-size: 50px;
     margin: 20px;
     color: var(--txt-d);
+    animation: pdf-icon-anim 0.8s;
+    animation-fill-mode: backwards;
+    animation-delay: 0.5s;
 }
 
 .file-input.small + label > span {
@@ -78,4 +84,44 @@
 
 #preview-canvas {
     width: 100%;
+}
+
+
+@keyframes pdf-icon-anim {
+    0% {
+        transform: translateY(0) scale(0%) rotate(90deg);
+    }
+
+    45% {
+        transform: translateY(-30px) scale(170%) rotate(0deg);
+        color: white;
+    } 
+
+    60% {
+        transform: translateY(-30px) scale(170%) rotate(0deg);
+    } 
+
+    85% {
+        transform: translateY(10px) scale(70%) rotate(0deg);
+    }
+
+    100% {
+        transform: translateY(0) scale(100%) rotate(0deg);
+    }
+}
+
+@keyframes file-input-text-anim {
+    from {
+        color: transparent
+    }
+
+    60% {
+        transform: translateY(0) scale(100%);
+        color: var(--txt-d)
+    } 
+
+    85% {
+        transform: translateY(2px) scale(110%);
+        color: var(--txt);
+    }
 }

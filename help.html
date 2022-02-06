@@ -52,7 +52,7 @@
             Certraines cases seront alors laissées vides et d'autres pourront être concatenées.
         </p>
 
-        <div class="help-example">
+        <div class="help-frame example">
             <div>
                 <span>Document de base :</span>
                 <table>
@@ -146,7 +146,7 @@
             Ceci peut être activé pour aucune ou une seule colonne.
         </p>
 
-        <div class="help-example">
+        <div class="help-frame example">
             <div>
                 <span>Document de base :</span>
                 <table>
@@ -219,6 +219,32 @@
             <li>Le <a class="link" href="#decalX">Décalage X</a> peut être trop grand et la colonne contient les valeurs de ses voisines</li>
             <li>Le titre de colonne n'a pas été bien détecté</li>
         </ul>
+
+        <h2 id="file-help">
+            Quel format choisir pour exporter?
+        </h2>
+        <ul>
+            <li><strong>XML:</strong> Format recommandé, peut être ouvert et modifié facilement par un tableur ou un autre programme. 
+                <a class="link" href="https://developer.mozilla.org/fr/docs/Web/XML/XML_introduction" target="_blank" rel="noopener noreferrer">
+                    Voir sur MDN Web docs
+                </a>
+            </li>
+            <li><strong>HTML:</strong> Peut être ouvert par un tableur, un navigateur ou un autre programme. 
+                <a class="link" href="https://developer.mozilla.org/fr/docs/Web/HTML" target="_blank" rel="noopener noreferrer">
+                    Voir sur MDN Web docs
+                </a>
+            </li>
+            <li><strong>CSV, SSV, TSV...:</strong> Valeurs séparées par une virgules, un point virgule ou une tablulation. 
+                Peut être ouvert par un tableur ou un autre programme.
+                <a class="link" href="https://fr.wikipedia.org/wiki/Comma-separated_values" target="_blank" rel="noopener noreferrer">
+                    Voir sur Wikipédia
+                </a>
+            </li>
+        </ul>
+
+        <div class="help-frame warning">
+            Excel gère très mal les fichiers CSV, SSV ou TSV. Le séparateur dépend des paramètres régionaux, et l'encodage n'est souvent pas détecté correctement.
+        </div>
     </div>
 
     <footer>

@@ -105,3 +105,9 @@
 #download > button {
     margin: 10px;
 }
+
+#export-select {
+    margin-left: 10px;
+    width: 5rem;
+}
+

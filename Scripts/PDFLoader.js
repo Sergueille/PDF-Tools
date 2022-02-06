@@ -55,6 +55,7 @@ function OnGetDoc(doc) {
 
 // Called when doc is loaded
 function OnDocLoaded() {
+    page.style.setProperty("transition-duration", "500ms")
     page.style.setProperty("grid-template-columns", "500px auto") // Display the resuts tab
     fileSelector.classList.remove("big"); // Change file input style
     fileSelector.classList.add("small");

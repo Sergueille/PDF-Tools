@@ -164,7 +164,14 @@
             <!--Download menu-->
             <div id="download">
                 <input type="text" class="textinput" id="file-name" placeholder="Nom du fichier">
-                <span>.csv</span>
+                <select id="export-select" class="textinput" onchange="CheckHelp()">
+                    <option value=".xml">.xml</option>
+                    <option value=".html">.html</option>
+                    <option value=".csv">.csv</option>
+                    <option value=".ssv">.ssv</option>
+                    <option value=".tsv">.tsv</option>
+                    <option value="help">Je choisis quoi?</option>
+                </select>
                 <button class="colorbtn" onclick="GetFile()">
                     <span class="material-icons">file_upload</span>
                     Exporter
@@ -199,5 +206,6 @@
 <script src="Scripts/TableExtractor.js"></script>
 <script src="Scripts/PopupHandler.js"></script>
 <script src="Scripts/PageSelection.js"></script>
+<script src="Scripts/Exportation.js"></script>
 
 </html>
