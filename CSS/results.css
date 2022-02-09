@@ -51,6 +51,10 @@
     width: 90%;
 }
 
+.colname > input:hover:not(.colname > input:focus) {
+    background-color: var(--bg);
+}
+
 #res-grid-help {
     color: var(--txt-d);
     position: relative;
