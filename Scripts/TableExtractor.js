@@ -20,6 +20,14 @@ var mainColumnValuesPos = []; // Y position of the values in the main column
 var truncateColumn; // Column to refer to for table truncation
 var truncateMinY = []; // THe min Y allowed to allow value in the table
 
+var hasCreatedColumn = false; // Il the user hes already created a column
+var mustConfirmToLeave = false;
+
+window.onbeforeunload = function(){
+    if (mustConfirmToLeave)
+        return 'Si vous partez, vos données seront pardues!';
+};
+
 for (let i = 0; i < 100; i++) {
     mainColumnValuesPos.push([]);
     truncateMinY.push(-1);
@@ -40,6 +48,8 @@ function AddColumn() {
     // Do nothing if no name entered
     if (!newColInput.value || !newColInput.value.trim())
         return;
+
+    hasCreatedColumn = true;
 
     // Create column
     tableData.push({
@@ -124,6 +134,10 @@ function RefreshAll() {
 
 // Destroys all the table and create new elements
 function DisplayTable() {
+    if (!hasCreatedColumn) return;
+    
+    mustConfirmToLeave = true;
+
     // Destroy chids
     while (table.firstChild) {
         table.removeChild(table.firstChild);

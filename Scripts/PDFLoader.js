@@ -19,7 +19,7 @@ var currentPageTexts; // A list of text objects on the current page
 var currentPagesId = [1]; // The ID of the current page
 
 // Hide the resuts tab
-page.style.setProperty("grid-template-columns", "100vw auto")
+page.style.setProperty("grid-template-columns", "100vw 0")
 
 // User dropped a file
 function OnDragDoc(event) {

@@ -3,6 +3,7 @@ const fileNameInput = document.getElementById("file-name"); // The input for the
 
 // Get CSVfile and start downloading
 function GetFile() {
+    mustConfirmToLeave = false;
     let extension = extensionSelect.value;
     let content;
     let MIMEType;
@@ -53,7 +54,10 @@ function CheckHelp() {
     if (extensionSelect.value === "help")
     {
         extensionSelect.value = ".xml"
-        window.location.assign("help.html#file-help");
+        Object.assign(document.createElement('a'), {
+            target: '_blank',
+            href: "help.html#file-help",
+        }).click();
     }
 }
 
