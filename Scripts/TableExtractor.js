@@ -1,5 +1,6 @@
 const table = document.getElementById("res-grid"); // The results table
 const newColInput = document.getElementById("new-col-input"); // The input for a new column
+const regexInput = document.getElementById("regex"); // The input for the regex
 
 // Settings input
 const settingsDropdown = document.getElementById("setting-select");
@@ -23,7 +24,7 @@ var truncateMinY = []; // THe min Y allowed to allow value in the table
 var hasCreatedColumn = false; // Il the user hes already created a column
 var mustConfirmToLeave = false;
 
-window.onbeforeunload = function(){
+window.onbeforeunload = function () {
     if (mustConfirmToLeave)
         return 'Si vous partez, vos données seront pardues!';
 };
@@ -135,7 +136,7 @@ function RefreshAll() {
 // Destroys all the table and create new elements
 function DisplayTable() {
     if (!hasCreatedColumn) return;
-    
+
     mustConfirmToLeave = true;
 
     // Destroy chids
@@ -234,7 +235,7 @@ function GetColValuesOnPage(column, pageId, ignoreMainCol = false) {
 
         if (Math.abs(colXcenter - xCenter) < column.maxXDiff) { // If x difference is smaller than limit
             if (y < colY) { // If text is below column name
-                if (text.str && text.str.trim()) { // If text is not empty
+                if (text.str && text.str.trim() && PassRegex(text.str)) { // If text is not empty ans pass regex
                     if (!truncateColumn || column == truncateColumn || y >= truncateMinY[pageId] - Ymargin) { // If can't truncate or not truncated
                         let canAdd = true;
                         if (mustAlign) { // Align values
@@ -271,6 +272,14 @@ function GetColValuesOnPage(column, pageId, ignoreMainCol = false) {
 
     // Get only text content
     return res.map(el => el[0]);
+}
+
+function PassRegex(value) {
+    if (!regexInput.value || !regexInput.value.trim())
+        return true;
+
+    const regex = new RegExp(regexInput.value);
+    return !regex.test(value);
 }
 
 // Get the id of the nearest value in main column

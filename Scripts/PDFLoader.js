@@ -60,6 +60,7 @@ function OnDocLoaded() {
     fileSelector.classList.remove("big"); // Change file input style
     fileSelector.classList.add("small");
     pageSelector.classList.remove("no-display"); // Display the page selector
+    document.getElementById("site-info").classList.add("no-display"); // Hide site info
     pageViewport = null; // Remove viewport to create another
     currentPagesId = [1];
     selectPages();

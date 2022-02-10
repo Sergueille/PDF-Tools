@@ -139,7 +139,7 @@
         </div>
 
         <h2 id="truncate">
-            Arrêter le tableau a la fin de la colonne
+            Arrêter le tableau à la fin de la colonne
         </h2>
         <p>
             Si cette case est cochée, toutes les valeurs des autres colonnes en dessous de la dernière valeur de cette colonne seront ignorées.
@@ -199,6 +199,17 @@
             </div>
         </div>
 
+        <h2 id="regex">
+            Filtrer avec une expression régulière (RegEx)
+        </h2>
+        <p>
+            <a class="link" href="https://fr.wikipedia.org/wiki/Expression_r%C3%A9guli%C3%A8re" target="_blank" rel="noopener noreferrer">C'est quoi?</a><br/>
+            <a class="link" href="https://regex101.com/" target="_blank" rel="noopener noreferrer">Ecrire des RegEx avec RegEx101</a>
+            <br/>
+            Toutes les élements de textes du PDF seront ignorés si ils correspondent à cette RegEx.<br/>
+            Utilisez la RegEx <strong>^\s*[^a-zA-Z0-9]*\s*$</strong> pour enlever les caractères spéciaux qui peuvent apparaitre, comme "@@@@@@@@@@@@««««««««".<br/>
+            S'applique à tout le tableau
+        </p>
 
         <h2 id="no-values">
             Aucune valeur ne s'affiche!

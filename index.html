@@ -34,6 +34,17 @@
                 <p>Glissez-déposez un fichier ou cliquez pour séléctionner</p>
             </label>
 
+            <!--Deleted when drag file-->
+            <div id="site-info">
+                Ce site a été créé grace à la librairie <a class="link" href="https://mozilla.github.io/pdf.js/" target="_blank" rel="noopener noreferrer">PDF.JS</a> 
+                <br/>
+                <br/>
+                <a class="btn" href="https://github.com/Sergueille/PDF-Tools" target="_blank" rel="noopener noreferrer">
+                    <img src="Images/GitHub.png" alt="GitHub">
+                    Voir le code source
+                </a>
+            </div>
+
             <!--Page buttons-->
             <div id="page-selector" class="no-display">
                 <button onclick="PreviousPage()" class="circlebtn">
@@ -87,8 +98,10 @@
                         <ul>
                             <li>Sélectionnez la ou les pages correspondantes sur votre gauche</li>
                             <li>En haut à droite, entrez le nom de la colonne désirée (le même que sur le document)</li>
-                            <li>Si vous avez un problème avec les valeurs, essayez de modifier les paramètres sur votre droite, et consultez la 
-                                <a href="help.html#no-values" target="_blank" rel="noopener noreferrer" class="link">Page d'aide</a>
+                            <li>Si vous avez un problème avec les valeurs, essayez de modifier les paramètres sur votre
+                                droite, et consultez la
+                                <a href="help.html#no-values" target="_blank" rel="noopener noreferrer"
+                                    class="link">Page d'aide</a>
                             </li>
                         </ul>
                     </div>
@@ -124,7 +137,8 @@
                             <input id="reference-column" type="checkbox" class="checkbox" onchange="ApplySettings()">
                             <label for="reference-column">
                                 Utiliser comme colonne de référence (pour aligner les valeurs des autres)
-                                <a class="helpbtn" href="help.html#reference-column" target="_blank" rel="noopener noreferrer">
+                                <a class="helpbtn" href="help.html#reference-column" target="_blank"
+                                    rel="noopener noreferrer">
                                     <span class="material-icons">help</span>
                                 </a>
                             </label>
@@ -134,7 +148,8 @@
                             <input id="align-values" type="checkbox" class="checkbox" onchange="ApplySettings()">
                             <label for="align-values">
                                 Aligner mes valeurs avec la colonne de référence
-                                <a class="helpbtn" href="help.html#align-with-ref" target="_blank" rel="noopener noreferrer">
+                                <a class="helpbtn" href="help.html#align-with-ref" target="_blank"
+                                    rel="noopener noreferrer">
                                     <span class="material-icons">help</span>
                                 </a>
                             </label>
@@ -154,19 +169,26 @@
                             <span class="material-icons">delete</span>
                             Supprimer la colonne
                         </button>
+
+
+                        <label>
+                            Ajouter une regex pour filtrer les élements de texte:
+                            <a class="helpbtn" href="help.html#regex" target="_blank" rel="noopener noreferrer">
+                                <span class="material-icons">help</span>
+                            </a>
+                        </label>
+                        <input id="regex" type="text" class="textinput" onchange="RefreshAll()">
                     </div>
+
+                    <div class="flex-grow"></div>
 
                     <div class="tip">
                         <span class="material-icons">lightbulb</span>
                         <strong>Astuce:</strong><br />
-                        Cliquez sur le nom d'un colonne dans le tableau pour la renommer.
-                        Laissez vide pour la supprimer.
-                    </div>
-                    <div class="tip">
-                        <span class="material-icons">lightbulb</span>
-                        <strong>Astuce:</strong><br />
-                        Pour trouver une colonne, vous pouvez entrer seulement une partie de son nom.
-                        Les majuscules ne sont pas prises en compte.
+                        <span id="tip-text">
+                            Chargement de l'astuce du jour...
+                            Ou alors le code marche plus.
+                        </span>
                     </div>
                 </div>
             </div>
@@ -217,5 +239,6 @@
 <script src="Scripts/PopupHandler.js"></script>
 <script src="Scripts/PageSelection.js"></script>
 <script src="Scripts/Exportation.js"></script>
+<script src="Scripts/tips.js"></script>
 
 </html>
