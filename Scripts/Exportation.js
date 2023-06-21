@@ -65,7 +65,8 @@ function GetCSV(separator = ";") {
     // Add column names
     let content = "";
     for (let i = 0; i < tableData.length; i++) {
-        content += `"${tableData[i].colname}"${separator}`;
+        let escaped = EscapeChars(tableData[i].colname, ["\"", separator]);
+        content += `"${escaped}"${separator}`;
     }
     content += "\n"
 
@@ -76,8 +77,10 @@ function GetCSV(separator = ";") {
     for (let i = 0; i < maxSize; i++) {
         // For each column
         for (let j = 0; j < tableData.length; j++) {
+            let escaped = EscapeChars(tableData[j].values[i], ["\"", separator]);
+
             if (i < tableData[j].values.length)
-                content += `"${tableData[j].values[i]}"${separator}`; // Get value
+                content += `"${escaped}"${separator}`; // Get value
             else
                 content += ` ${separator}` // Empty if longer than column
         }
@@ -146,4 +149,19 @@ function GetXML() {
     }
 
     return content + "</xml>";
+}
+
+function EscapeChars(text, escapeChars)
+{
+    let res = "";
+
+    for (char of text)
+    {
+        if (escapeChars.includes(char))
+            res += "\\" + char;
+        else
+            res += char
+    }
+
+    return res;
 }
