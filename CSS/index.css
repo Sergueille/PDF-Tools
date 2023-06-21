@@ -13,6 +13,8 @@
     margin: 0;
     box-sizing: border-box;
     transition: 200ms;
+
+    --nav-size: 3rem;
 }
 
 *::selection {
@@ -36,7 +38,7 @@ nav {
     z-index: 10;
 
     background-color: var(--bg-ll);
-    height: 5rem;
+    height: var(--nav-size);
     width: 100%;
     padding: 0 20px;
 
@@ -191,8 +193,8 @@ button > span {
 .table-extractor {
     display: grid;
 
-    padding: 5rem 0 0 0;
-    min-height: calc(100vh - 5rem);
+    padding: var(--nav-size) 0 0 0;
+    min-height: calc(100vh - var(--nav-size));
 }
 
 .version {
