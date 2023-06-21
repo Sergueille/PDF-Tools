@@ -35,14 +35,11 @@ function ConfirmSelection() {
 }
 
 function SelectAll() {
-    currentPagesId = []
+    value = selected.every(el => !el)
 
     for (let i = 0; i < selected.length; i++) {
-        currentPagesId.push(i + 1);
+        CheckPage(null, i, value);
     }
-
-    selectPages()
-    ClosePopup();
 }
 
 function SelectFirst() {
@@ -50,8 +47,8 @@ function SelectFirst() {
     selectPages();
 }
 
-function CheckPage(event, id) {
-    selected[id] = !selected[id];
+function CheckPage(event, id, forceValue=undefined) {
+    selected[id] = forceValue == undefined ? !selected[id] : forceValue;
 
     if (selected[id])
         buttons[id].classList.add("selected");
