@@ -266,7 +266,7 @@ function GetColValuesOnPage(column, pageId, ignoreMainCol = false) {
     });
 
     // Get truncation min
-    if (column == truncateColumn) {
+    if (column == truncateColumn && res.length > 0) {
         truncateMinY[pageId] = res[res.length - 1][1];
     }
 
