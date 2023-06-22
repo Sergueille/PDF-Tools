@@ -17,7 +17,7 @@
 <body class="no-overflow">
     <nav>
         <a class="title" href="index.html"><span>PDF</span> Table extractor </a>
-        <p class="version">1.0.1</p>
+        <p class="version">1.0.2</p>
         <div class="flex-grow"></div>
         <a class="btn" href="help.html" target="_blank" rel="noopener noreferrer">
             <span class="material-icons">help</span>
@@ -75,12 +75,15 @@
                 </span>
                 <button onclick="SelectFirst()" class="circlebtn">
                     <span class="material-icons">clear</span>
+                    <div class="tooltip">Annuler la sélection</div>
                 </button>
                 <button onclick="OpenPDF()" class="circlebtn">
                     <span class="material-icons">open_in_new</span>
+                    <div class="tooltip">Ouvrir le PDF</div>
                 </button>
                 <button onclick="OpenMultiSelection()" class="circlebtn">
-                    <span class="material-icons">content_copy</span>
+                    <span class="material-icons">library_add</span>
+                    <div class="tooltip">Sélectionner plusieurs pages</div>
                 </button>
             </div>
 
@@ -227,9 +230,11 @@
             </button>
             <button class="circlebtn" onclick="SelectAll()">
                 <span class="material-icons">done_all</span>
+                <div class="tooltip">Tout sélectionner</div>
             </button>
             <button class="circlebtn" onclick="ClosePopup()">
                 <span class="material-icons">clear</span>
+                <div class="tooltip">Annuler</div>
             </button>
         </div>
         <div id="pages-view">
