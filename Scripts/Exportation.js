@@ -77,12 +77,13 @@ function GetCSV(separator = ";") {
     for (let i = 0; i < maxSize; i++) {
         // For each column
         for (let j = 0; j < tableData.length; j++) {
-            let escaped = EscapeChars(tableData[j].values[i], ["\"", separator]);
-
             if (i < tableData[j].values.length)
+            {
+                let escaped = EscapeChars(tableData[j].values[i], ["\"", separator]);
                 content += `"${escaped}"${separator}`; // Get value
+            }
             else
-                content += ` ${separator}` // Empty if longer than column
+                content += `"" ${separator}` // Empty if longer than column
         }
         content += "\n"
     }
